@@ -1,0 +1,56 @@
+<p id="notice"><%= notice %></p>
+
+<h2> <%= @user.username %> </h2>
+
+<p>Has made <%= @user.ratings.count %> ratings</p>
+<% if @user.admin? %>
+  <p> You are an administrator </p>
+  <%else%>
+  
+  <p> you are not admin, vlaue of admin <%= @user.admin%> </p>
+  <%end%>
+
+<% if @user.beer_clubs.any? %>
+
+  <p>member of
+  <% @user.beer_clubs.each do |club| %>
+    <%= link_to club.name, club%>
+  <% end %>
+  </p>
+<% else %>
+  <p>no beerclub memberships</p>
+<% end %>
+
+<% if @user.ratings.any? %>
+  <p> Favorite beer: <%= @user.favorite_beer.name %> </p>
+  <p> Favorite brewery: <%= @user.favorite_brewery.name %> </p>
+  <p> Favorite style: <%= @user.favorite_style %> </p>
+
+  <p> average rating <%= @user.average_rating %></p>
+
+  <h3>ratings</h3>
+
+  <ul>
+  <% @user.ratings.each do |r| %>
+    <li>
+      <%= r %>
+      <% if @user == current_user %>
+        <%= link_to 'delete', r, method: :delete, data: { confirm: 'Are you sure?' } %>
+      <% end %>
+    </li>
+  <% end %>
+  </ul>
+
+<% end %>
+
+<% if current_user.admin?%>
+<%if @user.blocked? %>
+<%= link_to "Reactivate", toggle_blocked_user_path(@user.id), method: :post, class: "btn btn-primary" %>
+<%else%>
+<%= link_to "Freeze", toggle_blocked_user_path(@user.id), method: :post, class: "btn btn-primary" %>
+<%end%>
+<%end%>
+<% if @user==current_user%>
+  <%= link_to 'change password', edit_user_path(@user) %> <br>
+  <%= link_to 'destroy', @user, method: :delete, data: { confirm: 'Are you sure?' }  %> 
+<% end %>

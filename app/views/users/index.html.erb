@@ -1,0 +1,18 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Users</h1>
+
+<table>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.username, user %>
+        <% if user.blocked %>
+        <span class="label label-info">Blocked </span>
+        <%end%>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
